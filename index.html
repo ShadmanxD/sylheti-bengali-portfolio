@@ -160,6 +160,15 @@ html, body { margin: 0; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
 :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+.cases.guides { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.case.guide { grid-template-rows: auto auto 1fr; position: relative; }
+.case.guide h3 a { text-decoration: none; }
+.case.guide h3 a::after { content: ""; position: absolute; inset: 0; border-radius: 10px; }
+.case.guide:hover { border-color: var(--accent); }
+.case.guide h3 a:focus-visible { outline: none; }
+.case.guide:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 900px) { .cases.guides { grid-template-columns: minmax(0, 1fr); } }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -449,6 +458,7 @@ footer .wrap { padding-block: 1.25rem; display: flex; justify-content: space-bet
       <a href="#services" class="opt">Services</a>
       <a href="#work">Work</a>
       <a href="#reviews" class="opt">Reviews</a>
+      <a href="#guides" class="opt">Guides</a>
       <a href="#experience">Experience</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -797,6 +807,20 @@ footer .wrap { padding-block: 1.25rem; display: flex; justify-content: space-bet
     </div>
   </section>
 
+
+  <section class="block" id="guides">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Guides</h2>
+        <p>Practical guides on Sylheti and Bengali translation for legal teams, researchers and families.</p>
+      </div>
+      <ul class="cases guides">
+        <li class="case guide"><span class="kind">Guide · Language</span><h3><a href="sylheti-vs-bengali/">Sylheti vs Bengali: What's the Difference?</a></h3><p>How the two differ in sound, words and writing, and when you need Sylheti.</p></li>
+        <li class="case guide"><span class="kind">Guide · Legal</span><h3><a href="sylheti-interpreter-for-court/">How to Hire a Sylheti Translator or Interpreter for Court</a></h3><p>A checklist for solicitors and social workers: documents, timing and what to ask.</p></li>
+        <li class="case guide"><span class="kind">Guide · Research</span><h3><a href="sylheti-transcription-for-research/">Sylheti Transcription and Translation for Research</a></h3><p>Formats, timestamps and recording tips for interviews and focus groups.</p></li>
+      </ul>
+    </div>
+  </section>
 
   <section class="block" id="faq">
     <div class="wrap">
