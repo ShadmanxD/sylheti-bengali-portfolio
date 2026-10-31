@@ -409,16 +409,32 @@ section.block + section.block { border-top: 1px solid var(--rule); }
 footer { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
 footer .wrap { padding-block: 1.25rem; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 
+.show-all {
+  margin-top: 1rem; width: 100%; font: 500 0.95rem/1.2 var(--body); color: var(--ink); background: transparent;
+  border: 1px solid var(--ink); border-radius: 999px; padding: 0.75rem 1rem; cursor: pointer;
+}
+.show-all:hover { border-color: var(--accent); color: var(--accent); }
+.show-all:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
 @media (max-width: 760px) {
-  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
-  .portrait { justify-self: start; max-width: 16rem; order: -1; }
+  /* Phone hero: text leads, the portrait becomes a small profile row above it */
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; padding-block: 1.75rem 2.25rem; }
+  .portrait { order: -1; justify-self: stretch; max-width: none; display: flex; align-items: center; gap: 0.9rem; }
+  .portrait img { width: 4.5rem; height: 4.5rem; aspect-ratio: 1; border-radius: 50%; object-position: 50% 24%; flex: none; }
+  .portrait figcaption { margin: 0; flex-direction: column; justify-content: center; gap: 0.15rem; }
+  .portrait figcaption span:first-child { font-family: var(--display); font-size: 1.1rem; color: var(--ink); }
+  .hero .eyebrow { margin-bottom: 0.6rem; }
+  .cta .btn { flex: 1 1 auto; justify-content: center; }
   .services, .cases, .two-col, .contact .wrap { grid-template-columns: minmax(0, 1fr); }
   .timeline li { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; }
   .topbar nav { gap: 0.9rem; }
 }
 @media (max-width: 520px) {
-  .scripts .wrap { grid-template-columns: minmax(0, 1fr); }
-  .specimen + .specimen { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 0.9rem; }
+  /* Keep the three scripts on one row instead of a tall stack */
+  .scripts .wrap { gap: 0.75rem; padding-block: 1.1rem; }
+  .specimen + .specimen { padding-left: 0.75rem; }
+  .glyphs { font-size: 1.6rem; }
+  .specimen small { font-size: 0.66rem; }
   .topbar nav a.opt { display: none; }
 }
 
@@ -717,6 +733,7 @@ footer .wrap { padding-block: 1.25rem; display: flex; justify-content: space-bet
           <dl><div><dt>Pair</dt><dd>BN → EN</dd></div><div><dt>Volume</dt><dd>170 words</dd></div></dl>
         </li>
       </ul>
+      <button type="button" class="show-all" id="show-all" hidden>Show all 24 projects</button>
       <p class="confidential">Every project here involved confidential material, so names, case details and document text are left out on purpose.</p>
     </div>
   </section>
@@ -876,11 +893,34 @@ footer .wrap { padding-block: 1.25rem; display: flex; justify-content: space-bet
 (function () {
   var buttons = document.querySelectorAll('.filters button');
   var cases = document.querySelectorAll('#cases .case');
+  var showAll = document.getElementById('show-all');
+  var phone = window.matchMedia('(max-width: 760px)');
+  var PHONE_LIMIT = 6;
+  var expanded = false;
+  var current = 'all';
+  // On phones the full list is long, so "All" starts with the first few projects
   function apply(filter) {
+    current = filter;
+    var collapse = phone.matches && !expanded && filter === 'all';
+    var shown = 0;
     buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.filter === filter)); });
-    cases.forEach(function (c) { c.hidden = !(filter === 'all' || c.dataset.cat === filter); });
+    cases.forEach(function (c) {
+      var match = filter === 'all' || c.dataset.cat === filter;
+      if (match) shown++;
+      c.hidden = !match || (collapse && shown > PHONE_LIMIT);
+    });
+    showAll.hidden = !(collapse && cases.length > PHONE_LIMIT);
   }
   buttons.forEach(function (b) { b.addEventListener('click', function () { apply(b.dataset.filter); }); });
+  showAll.addEventListener('click', function () {
+    expanded = true;
+    apply(current);
+    var next = cases[PHONE_LIMIT] && cases[PHONE_LIMIT].querySelector('h3');
+    if (next) { next.setAttribute('tabindex', '-1'); next.focus(); }
+  });
+  if (phone.addEventListener) phone.addEventListener('change', function () { apply(current); });
+  else if (phone.addListener) phone.addListener(function () { apply(current); });
+  apply('all');
 
   document.querySelectorAll('.copy').forEach(function (btn) {
     btn.addEventListener('click', function () {
