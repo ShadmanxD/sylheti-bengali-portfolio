@@ -64,7 +64,10 @@ article { padding-block: 1rem 3rem; }
 h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2rem, 5.5vw, 3rem); line-height: 1.1; margin: 0 0 1rem; text-wrap: balance; }
 .dek { font-size: 1.2rem; color: var(--muted); margin: 0 0 1.2rem; }
 .byline { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; }
+.byline:has(.avatar) { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 0.8rem; row-gap: 0.1rem; align-items: center; }
+.byline .avatar { grid-row: span 2; }
 .byline a { text-decoration: none; color: var(--ink); }
+.avatar { width: 2.6rem; height: 2.6rem; border-radius: 50%; object-fit: cover; object-position: 50% 24%; flex: none; }
 
 .prose { max-width: 42rem; }
 .prose h2 { font-family: var(--display); font-weight: 400; font-size: 1.6rem; line-height: 1.2; margin: 2.4rem 0 0.8rem; text-wrap: balance; }
@@ -94,6 +97,10 @@ td .rom { display: block; font-family: var(--mono); font-size: 0.78rem; color: v
   border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.1rem; margin: 0 0 1.4rem; overflow-x: auto; white-space: pre-wrap;
 }
 .sample .bn { font-family: var(--bangla); font-size: 0.95rem; }
+
+.chart { margin: 0 0 1.6rem; }
+.chart img { display: block; width: 100%; max-width: 30rem; height: auto; border-radius: 10px; border: 1px solid var(--rule); }
+.chart figcaption { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
 
 .cta {
   margin: 2.4rem 0 0; padding: 1.4rem 1.5rem; border-radius: 10px; background: var(--ink); color: var(--paper); max-width: 42rem;
